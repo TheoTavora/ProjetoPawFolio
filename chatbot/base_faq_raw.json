@@ -1,5 +1,10 @@
 [
     {
+        "pergunta": "Quero falar com um humano",
+        "resposta": "Espere e um humano estará entrando em contato.",
+        "embedding": ""
+    },
+    {
         "pergunta": "Como agendar?",
         "resposta": "Você pode agendar serviços acessando a aba de agendamento no menu principal.",
         "embedding": ""

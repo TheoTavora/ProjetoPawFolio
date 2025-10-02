@@ -29,21 +29,13 @@ include('../../../Controllers/ClienteController.php') // Inclue Cadastrar o Clie
         // Sanitização básica dos inputs
         $nome   = trim($_POST['name'] ?? '');
         $email  = trim($_POST['email'] ?? '');
-        $cpf    = trim($_POST['cpf'] ?? '');
         $senha  = trim($_POST['senhaC'] ?? '');
-        $tel    = trim($_POST['telefone'] ?? '');
-        $end    = trim($_POST['endereco'] ?? '');
-        $DNSC   = trim($_POST['dtnsc'] ?? '');
 
         // Lista de campos obrigatórios
         $camposObrigatorios = [
             'nome'  => $nome,
             'email' => $email,
-            'cpf'   => $cpf,
             'senha' => $senha,
-            'telefone' => $tel,
-            'endereco' => $end,
-            'data de nascimento' => $DNSC
         ];
 
         // Validação
@@ -55,18 +47,14 @@ include('../../../Controllers/ClienteController.php') // Inclue Cadastrar o Clie
         }
 
         // Chamada ao controller
-        ClienteController::cadastrar($cpf, $nome, $DNSC, $tel, $end, $email, $senha);
+        ClienteController::cadastrar($nome, $email, $senha);
         ClienteController::alert('sucesso', "Cadastro de {$nome} efetuado com sucesso!");
     }
     ?>
 
             <form method="POST">
             <h1 style="color: white;">Cadastre-se</h1>
-                    <div><input type="text" name="cpf" placeholder="CPF"></div>
                     <div><input type="text" name="name" placeholder="Nome"></div>
-                    <div><input type="date" name="dtnsc" value="Data de nascimento"></div>
-                    <div><input type="text" name="telefone" placeholder="Telefone"></div>
-                    <div><input type="text" name="endereco" placeholder="Endereço"></div>
                     <div><input type="text" name="email" placeholder="E-mail"></div>
                     <div><input type="text" name="senhaC" placeholder="Senha"></div>
                     <div><input type="submit" name="acao" value="Cadastrar" class="submit-button"></div>

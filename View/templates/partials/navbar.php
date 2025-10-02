@@ -36,12 +36,12 @@ include ('C:\xampp\htdocs\ProjetoPawFolio\config.php');
                     // Validação do usuário para ter acesso a funcionalidade: Logout.
                         $linkcadastro = '';
                         $linklogin = '';
-                        if (!isset($_SESSION['user'])) {
+                        if (!isset($_SESSION['user_email'])) {
                             $linkcadastro = '<li class="nav-item"><a href="'. cadastro .'" class="header-button nav-link">CADASTRAR</a></li>';
                             $linklogin = '<li class="nav-item"><a href="'. login .'" class="header-button nav-link">LOGIN</a></li>';
                             echo $linkcadastro;
                             echo $linklogin; 
-                        } else if (isset($_SESSION['user'])) {
+                        } else if (isset($_SESSION['user_email'])) {
                             echo '<li class="nav-item"><a href="'. logout .'" class="header-button nav-link">LOGOUT</a></li>';
                         }
                         

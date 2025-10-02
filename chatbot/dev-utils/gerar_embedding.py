@@ -7,11 +7,10 @@
 
 from sentence_transformers import SentenceTransformer
 import json
-# Aqui um vetor chamado "faq" referente as perguntas-base, que será transformado em JSON.
+
 with open('../base_faq_raw.json', 'r', encoding='utf-8') as f:
     faq = json.load(f)
 
-# Modelo leve e gratuito: all-MiniLM-L6-v2
 modelo = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Extrai apenas as perguntas para gerar embeddings

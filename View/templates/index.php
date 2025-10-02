@@ -1,8 +1,8 @@
 <?php
 
 session_start();
-include ('../../Models/message.php'); // Inclue o arquivo PHP message para mostrar Box Pop-Up nas telas.
-include('../../Models/conect.php'); // Conecta com o BD
+include ('../../Models/message.php'); 
+include('../../Models/conect.php'); 
 /*
 if (isset($_SESSION['user'])) {
     boxpopup('Sessão iniciada');
@@ -72,7 +72,7 @@ if (isset($_SESSION['user'])) {
                 </div>
                 <div class="col-md-6 d-flex mt-5 col">
                     <div class="wrapper-img">
-                        <img src="../static/imgs/cachorrotosa.jpg" alt="cachorro-tosa" />
+                        <img src="../static/imgs/cachorroacessorios.jpg" alt="cachorro-tosa" />
                     </div>
                     <div class="wrapper-conteudo">
                         <h4>
@@ -89,7 +89,7 @@ if (isset($_SESSION['user'])) {
                 </div>
                 <div class="col-md-6 d-flex mt-5 mb-5 col">
                     <div class="wrapper-img">
-                        <img src="../static/imgs/cachorrotosa.jpg" alt="cachorro-tosa" />
+                        <img src="../static/imgs/cachorrobanho.jpg" alt="cachorro-tosa" />
                     </div>
                     <div class="wrapper-conteudo">
                         <h4>
@@ -105,7 +105,7 @@ if (isset($_SESSION['user'])) {
                 </div>
                 <div class="col-md-6 d-flex mt-5 mb-5 col">
                     <div class="wrapper-img">
-                        <img src="../static/imgs/cachorrotosa.jpg" alt="cachorro-tosa" />
+                        <img src="../static/imgs/cachorrovet.jpg" alt="cachorro-tosa" />
                     </div>
                     <div class="wrapper-conteudo">
                         <h4>
@@ -124,36 +124,6 @@ if (isset($_SESSION['user'])) {
             <a href="#" class="btn-cta">AGENDE AGORA!</a>
         </div>
     </section>
-    <!--
-        <footer>
-            <div class="rodape">
-                <img class="footer_logo" src="../static/imgs/logopawfoliomenor.png">
-                <img class="local_map" src="../static/imgs/complexodoalemao.png">
-            <h1 id="text_copyright"> 2023, Pawfolio. <br>
-                Todos os direitos reservados.
-            </h1>
-            <h1 id="text_rua">
-                R. Carlinhos Maia 69, Complexo <br>
-                do Alemão - SP.
-            </h1>
-
-            <h1 id="text_num">
-                (14) 98765-4321
-            </h1>
-
-            <div class="icons">
-                <a href="https://instagram.com/soexclusive12_?igshid=YmMyMTA2M2Y=">
-                <img id="instagram"src="../static/imgs/instagram.png"> </a>
-
-                <a href="https://www.facebook.com/groups/1827907527528293">
-                <img id="facebook" src="../static/imgs/facebook.png"></a>
-
-                <a href="https://www.youtube.com/watch?v=LieGF7OBNA4">
-                <img id="youtube" src="../static/imgs/youtube.png"></a>
-            </div>
-            </div>
-        </footer> 
-        -->
     <?php 
         include 'partials/footer.php'; 
     ?>

@@ -4,35 +4,35 @@ session_start(); // Inicia a sessão no começo do arquivo
 
 include('../../../Models/conect.php'); // Conecta ao banco de dados
 
-// Verifica se os campos Usuario e senha foram enviados
-if(isset($_POST['user']) && isset($_POST['senha'])){
-    if(strlen($_POST['user']) == 0){
-        echo 'O campo Usuário está vazio, preencha-o';
-    } else if(strlen($_POST['senha']) == 0){
-        echo 'O campo senha está vazio, preencha-o';
-    } else { 
-        $user = $connect->real_escape_string($_POST['user']);
-        $senha = $connect->real_escape_string($_POST['senha']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email'] ?? '');
+    $senha = $_POST['senha'] ?? '';
 
-        // Consulta segura com prepared statement para evitar SQL Injection
-        $sql_code = "SELECT * FROM cliente WHERE nomeCliente = ? AND senha = ?";
-        $stmt = $connect->prepare($sql_code);
-        $stmt->bind_param("ss", $user, $senha);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    if ($email === '' || $senha === '') {
+        exit('preencha e-mail e senha.');
+    }
 
-        if($result->num_rows == 1){
-            $usuario = $result->fetch_assoc();
-            
-            $_SESSION['user'] = $usuario['nomeCliente']; // Armazena o usuário na sessão
-            header("Location: ../index.php"); // Redireciona para a página inicial
-            exit();
-        } else {
-            echo 'Falha em logar! Usuário ou senha incorretos.';
-        }
+    // consulta simples
+    $sql = "SELECT nome, email, senha FROM cliente WHERE email = ? AND senha = ? LIMIT 1";
+    $stmt = $connect->prepare($sql);
+    if (!$stmt) {
+        exit('erro na preparação: ' . $connect->error);
+    }
+    $stmt->bind_param('ss', $email, $senha);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    if ($row = $res->fetch_assoc()) {
+        // login deu certo
+        session_regenerate_id(true);
+        $_SESSION['user_email'] = $row['email'];
+        $_SESSION['user_nome'] = $row['nome'];
+        header('Location: ../index.php');
+        exit;
+    } else {
+        echo 'falha ao logar: e-mail ou senha incorretos.';
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +56,8 @@ if(isset($_POST['user']) && isset($_POST['senha'])){
                 <h1 style="color: white;">Seja bem-vindo!</h1>
                 <span>Faça login para acessar a página inicial.</span>
                     <div class="whiteline"></div>
-                        <div><input type="text" name="user" placeholder="Seu nome"></div>
-                        <div><input type="password" name="senha" placeholder="Senha"></div>
+                        <div><input type="email" name="email" placeholder="seu e-mail"></div>
+                        <div><input type="password" name="senha" placeholder="senha"></div>
                         <div><input type="submit" name="Confirmar" value="Confirmar"></div>
                         <div><input type="hidden" name="form" value="L_form"></div> 
                     <div class="whiteline"></div>

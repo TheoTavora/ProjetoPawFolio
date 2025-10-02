@@ -72,38 +72,8 @@ if ($faq === null) {
 <head>
   <meta charset="UTF-8">
   <title>Painel FAQ</title>
-  <style>
-    form {
-      width: 80%;
-      margin-top: 86px;
-      padding: 20px;
-    }
-    body { 
-      font-family: sans-serif;
-      width: 100%; 
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    textarea {
-       width: 100%; 
-       height: 120px; 
-       margin-bottom: 20px; 
-      }
-    input, button { padding: 8px; }
-    input {
-      width: 30%;
-    }
-    .faq-item { 
-      border: 1px solid #ccc; 
-      padding: 10px; 
-      margin-bottom: 15px; 
-      border-radius: 5px; 
-      width: 100%;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="../View/static/CSS/admin.css" reL="stylesheet">
   <!--BOOTSTRAP CSS-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
@@ -112,47 +82,63 @@ if ($faq === null) {
   <?php 
         include 'C:\xampp\htdocs\ProjetoPawFolio\View\templates\partials\navbar.php';
     ?>
-  
-
   <?php if (isset($_GET['salvo'])) echo '<script>alert("FAQ salvo com sucesso e embeddings atualizados!");</script>' ?>
 
-  <form method="POST">
-    <h1>Painel de FAQ – PawFolio</h1>
-    <h3>Adicionar nova pergunta</h3>
-      <div class="faq-item">
-        <label>Pergunta:</label><br>
-        <input type="text" name="faq[<?= count($faq) ?>][pergunta]"><br><br>
-        
-        <label>Resposta:</label><br>
-        <textarea name="faq[<?= count($faq) ?>][resposta]"></textarea><br>
-        
-        <input type="hidden" name="faq[<?= count($faq) ?>][embedding]" value="">
-      </div>
-      <button type="submit" class="mb-4">Salvar FAQ + Recalcular Embeddings</button>
-
-      <h3>Suas perguntas:</h3>
-      <?php 
-      foreach ($faq as $index => $item): ?>
-        <div class="faq-item">
-          <label>Pergunta:</label><br>
-          <input type="text" name="faq[<?= $index ?>][pergunta]" value="<?= htmlspecialchars($item['pergunta']) ?>"><br><br>
-          
-          <label>Resposta:</label><br>
-          <textarea name="faq[<?= $index ?>][resposta]"><?= htmlspecialchars($item['resposta']) ?></textarea><br>
-
-          <input type="hidden" name="faq[<?= $index ?>][embedding]" value="">
-
-          <input type="hidden" name="faq[<?= $index ?>][embedding]" value="">
-          <label style="color:red;">
-            <input type="checkbox" name="faq[<?= $index ?>][remover]" value="1"> Remover
-          </label>
-        </div>
-    <?php endforeach; ?>
-  </form>
-
+      <div class="container-1">
+        <form method="POST">
+            <h1>Painel de FAQ – PawFolio</h1>
+            <h3>Adicionar nova pergunta</h3>
+            
+            <div class="faq-item">
+                <label>Pergunta:</label><br>
+                <input type="text" name="faq[<?= count($faq) ?>][pergunta]"><br><br>
+                
+                <label>Resposta:</label><br>
+                <textarea name="faq[<?= count($faq) ?>][resposta]"></textarea><br>
+                
+                <input type="hidden" name="faq[<?= count($faq) ?>][embedding]" value="">
+            </div>
+            
+            <button type="submit" class="mb-4">Salvar FAQ + Recalcular Embeddings</button>
+            
+            <h3>Suas perguntas:</h3>
+            
+            <?php foreach ($faq as $index => $item): ?>
+                <div class="faq-item">
+                    <label>Pergunta:</label><br>
+                    <input type="text" name="faq[<?= $index ?>][pergunta]" value="<?= htmlspecialchars($item['pergunta']) ?>"><br><br>
+                    
+                    <label>Resposta:</label><br>
+                    <textarea name="faq[<?= $index ?>][resposta]"><?= htmlspecialchars($item['resposta']) ?></textarea><br>
+                    <input type="hidden" name="faq[<?= $index ?>][embedding]" value="">
+                    <input type="hidden" name="faq[<?= $index ?>][embedding]" value="">
+                    <label style="color:red;">
+                        <input type="checkbox" name="faq[<?= $index ?>][remover]" value="1"> Remover
+                    </label>
+                </div>
+            <?php endforeach; ?>
+        </form>
+    </div>
   <?php 
         include 'C:\xampp\htdocs\ProjetoPawFolio\View\templates\partials\footer.php';
   ?>
+  <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            const button = document.querySelector('button[type="submit"]');
+            button.classList.add('loading');
+            button.textContent = 'Processando...';
+        });
+
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

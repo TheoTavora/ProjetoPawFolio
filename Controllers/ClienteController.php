@@ -23,20 +23,21 @@ class ClienteController{
         }
     }
 
-    public static function cadastrar($cpf, $nome, $DNSC, $tel, $end, $email, $senha){
+    public static function cadastrar($nome, $email, $senha){
         include('../../../Models/conect.php');
-        $sql = "INSERT INTO `cliente` VALUES(?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO cliente (nome, email, senha) VALUES (?, ?, ?)";
         $stmt = $connect->prepare($sql);
         if(!$stmt){
             echo'Erro na preparação da consulta: ' . $connect->error;
         } else {
-            $stmt->bind_param("sssssss", $cpf, $nome, $DNSC, $tel, $end, $email, $senha);
+            $stmt->bind_param("sss", $nome, $email, $senha);
         }
 
         if($stmt->execute()){
             header("Location: ../login/Login.php");
         } else {
-            echo 'Inserção de novo usuário errada.'-> mysql_errno;
+            echo 'Inserção de novo usuário errada. Erro: ' . $stmt->error;
+
         }
     }
    
