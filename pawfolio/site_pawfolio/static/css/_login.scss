@@ -1,0 +1,82 @@
+@import 'variables';
+@import 'mixins';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $fonte-padrao;
+}
+
+html, body {
+  background: url('/static/images/dogoculosamarelo.png') no-repeat center center/cover;
+}
+
+form {
+  width: 100%;
+  min-width: fit-content;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: $cor-fundo-form;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  h2 {
+    margin-bottom: 1rem;
+    color: $cor-branco;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: bold;
+  }
+  div {
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid rgba(160, 9, 9, 0.822);
+      border-radius: 4px;
+      font-size: 1rem;
+      &:focus {
+        border-color: darken($cor-primaria, 10%);
+        outline: none;
+        box-shadow: 0 0 5px rgba($cor-primaria, 0.5);
+      }
+    }
+  }
+  button {
+    width: 100% !important;
+    padding: 0.75rem;
+    background-color: $cor-primaria;
+    border: none;
+    border-radius: 4px;
+    color: $cor-branco;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: darken($cor-primaria, 10%);
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  .cta {
+    color: $cor-branco;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    margin-bottom: 0;
+    border: 1px solid $cor-branco;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+  a {
+    @include botao-base;
+  }
+}

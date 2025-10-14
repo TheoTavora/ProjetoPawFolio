@@ -1,0 +1,99 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .ct-form {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .erro {
+            color: red;
+            font-size: 14px;
+        }
+        .sucesso {
+            color: green;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container ct-form">
+        <h1>Agendamento de Serviço para Pets</h1>
+          {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+        {% if sucesso %}
+            <p class="sucesso">{{ sucesso }}</p>
+        {% endif %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <label for="pet">Escolha o Pet:</label>
+            <select name="pet" id="pet">
+                <option value="">Selecione o Pet</option>
+                <option value="Cachorro">Cachorro</option>
+                <option value="Gato">Gato</option>
+                <option value="Coelho">Coelho</option>
+                <option value="Outro">Outro</option>
+            </select>
+ 
+            <label for="petshop">Escolha o Petshop:</label>
+            <select name="petshop" id="petshop">
+                <option value="">Selecione o Petshop</option>
+                <option value="Petshop A">Petshop A</option>
+                <option value="Petshop B">Petshop B</option>
+                <option value="Petshop C">Petshop C</option>
+            </select>
+ 
+            <label for="servico">Escolha o Serviço:</label>
+            <select name="servico" id="servico">
+                <option value="">Selecione o Serviço</option>
+                <option value="Banho">Banho</option>
+                <option value="Tosa">Tosa</option>
+                <option value="Hidratação">Hidratação</option>
+                <option value="Consultoria">Consultoria</option>
+            </select>
+ 
+            <label for="data">Escolha a Data:</label>
+            <input type="date" name="data" id="data">
+ 
+            <button type="submit" class="btn">Agendar Serviço</button>
+        </form>
+    </div>
+</body>
+</html>
+ 
+{% endblock %}

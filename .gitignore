@@ -1,0 +1,9 @@
+*.sqlite3
+**/__pycache__
+**/.venv
+**/.env
+**/venv
+**/.vscode
+**/.vscode/*
+pawfolio/media/*
+!.env.example

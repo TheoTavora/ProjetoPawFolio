@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="ctt" aria-labelledby="ttl-pet">
+  <header>
+    <h1 id="ttl-pet">Cadastrar pet</h1>
+    <p id="desc-pet">preencha os dados do seu pet. campos marcados com * são obrigatórios.</p>
+  </header>
+
+  {% if erro %}
+    <div role="alert" aria-live="polite" class="alert alert-error">{{ erro }}</div>
+  {% endif %}
+  {% if sucesso %}
+    <div role="status" aria-live="polite" class="alert alert-success">{{ sucesso }}</div>
+  {% endif %}
+
+  <form method="post" action="" aria-describedby="desc-pet" novalidate>
+    {% csrf_token %}
+
+    <fieldset>
+      <legend>identificação</legend>
+
+      <div class="field">
+        <label for="nome">nome *</label>
+        <input type="text" id="nome" name="nome" required autocomplete="name" maxlength="80">
+      </div>
+
+      <div class="field">
+        <label for="especie">espécie *</label>
+        <select id="especie" name="especie" required>
+          <option value="">selecione</option>
+          <option>Cachorro</option>
+          <option>Gato</option>
+          <option>Coelho</option>
+          <option>Outro</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="raca">raça</label>
+        <input type="text" id="raca" name="raca" maxlength="80">
+      </div>
+
+      <div class="field">
+        <label for="sexo">sexo</label>
+        <select id="sexo" name="sexo">
+          <option value="">selecione</option>
+          <option>Macho</option>
+          <option>Fêmea</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="porte">porte</label>
+        <select id="porte" name="porte">
+          <option value="">selecione</option>
+          <option>Pequeno</option>
+          <option>Médio</option>
+          <option>Grande</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="nascimento">nascimento</label>
+        <input type="date" id="nascimento" name="nascimento" inputmode="numeric">
+      </div>
+
+      <div class="field">
+        <label for="obs">observações</label>
+        <textarea id="obs" name="obs" rows="3" maxlength="500"></textarea>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="submit" class="btn">salvar</button>
+      <a href="{% url 'index' %}" class="btn btn-secundario" role="button">cancelar</a>
+    </div>
+  </form>
+</article>
+
+<style>
+.ctt{max-width:720px;margin-inline:auto;padding:1.25rem}
+.field{display:flex;flex-direction:column;gap:.25rem;margin-block:.5rem}
+.actions{display:flex;gap:.5rem;margin-top:1rem}
+.btn{padding:.6rem 1rem;border:0;border-radius:.5rem;cursor:pointer}
+.btn-secundario{display:inline-block;text-decoration:none;padding:.6rem 1rem;border:1px solid #ddd;border-radius:.5rem}
+.alert{padding:.75rem 1rem;border-radius:.5rem;margin:.5rem 0}
+.alert-error{background:#fee;border:1px solid #fbb}
+.alert-success{background:#efe;border:1px solid #bdb}
+</style>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- <link rel="stylesheet" href="{% static '/css/subheader.css' %}"> -->
+<link rel="stylesheet" href="{% static '/css/cadastro.css' %}">
+<link rel="icon" type="image/png" href="{% static '/images/logopawfoliomenor.png' %}"/>
+
+<div class="ct">
+<form method="post">
+    <h2>Cadastre-se!</h2>
+  {% csrf_token %}
+  <input type="text" name="name" placeholder="Nome">
+  <input type="email" name="email" placeholder="Email">
+  <input type="password" name="senha" placeholder="Senha">
+  <button type="submit">Cadastrar</button>
+  <div class="whiteline"></div>
+  <p>Já tem uma conta?</p>
+  <a href="{% url 'index' %}">Fazer Login</a> 
+</form>
+</div>
+{% if erro %}
+  <p style="color:red">{{ erro }}</p>
+{% endif %}
+
+{% endblock content %}

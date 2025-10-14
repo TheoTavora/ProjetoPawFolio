@@ -1,0 +1,24 @@
+{# templates/site/login.html #}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/css/login.css' %}">
+<link rel="icon" type="image/png" href="{% static '/images/logopawfoliomenor.png' %}"/>
+
+<form method="post" action="{% url 'login' %}">
+  {% csrf_token %}
+  <h2>Entrar</h2>
+  <div><input type="email"   name="email"  placeholder="seu e-mail" required></div>
+  <div><input type="password" name="senha" placeholder="senha" required></div>
+  <div><button type="submit">Confirmar</button></div>
+  <div class="wrapper">
+    <p class="cta">Não tem uma conta?</p>
+    <a href="{% url 'cadastro' %}">Cadastre-se</a>
+  </div>
+</form>
+
+{% if erro %}<p style="color:red">{{ erro }}</p>{% endif %}
+
+
+{% endblock %}

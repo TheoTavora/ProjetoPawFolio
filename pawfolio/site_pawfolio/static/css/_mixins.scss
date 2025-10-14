@@ -1,0 +1,53 @@
+@mixin flexCenter($flexdirection, $textdirection: null) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @if $textdirection {
+      text-align: $textdirection;
+    }
+    flex-direction: $flexdirection;
+}
+
+@mixin box-form {
+  border-radius: 15px;
+  background: $cor-fundo-form;
+  backdrop-filter: $blur;
+  -webkit-backdrop-filter: $blur;
+  box-shadow: $sombra-form;
+  text-align: center;
+}
+
+@mixin placeholder-estilo {
+  color: $cor-placeholder;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+@mixin botao-base {
+  color: $cor-branco;
+    text-decoration: none;
+    background-color: $cor-primaria;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    &:hover {
+      background-color: darken($cor-primaria, 10%);
+    }
+}
+
+@mixin responsivo-form {
+  @media(min-width: 200px) {
+    width: 90%;
+  }
+  @media(min-width: 800px) {
+    width: 50%;
+  }
+}
+
+@mixin container-geral {
+  .container-geral {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+}

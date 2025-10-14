@@ -1,0 +1,29 @@
+{% load static %}
+<!-- Navegação -->
+<nav class="navbar navbar-expand-lg">
+        <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+            <img src="{% static '/images/logopawfoliomenor.png' %}" alt="Logo" width="60" height="60" class="me-2">
+            <span>PawFolio</span>
+        </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" onclick="trocaNavbarCor()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto d-flex ul-lst">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">SERVIÇOS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">SOBRE NÓS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'agendamentos_view' %}">AGENDAMENTOS</a></li>
+                    {% if request.session.user_email %}
+                        <li><a href="{% url 'logout' %}" class="header-button nav-link">LOGOUT</a></li>
+                        <li><a href="{% url 'cadastropet_view' %}" class="header-button nav-link">CADASTRAR PET</a></li>
+                    {% else %}
+                        <li><a href="{% url 'cadastro' %}" class="header-button nav-link">CADASTRAR</a></li>
+                        <li><a href="{% url 'login' %}" class="header-button nav-link">LOGIN</a></li>
+                    {% endif %}
+                  <!--<li class="nav-item"><a class="nav-link" href="https://api.whatsapp.com/send?phone=">Whatsapp</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
