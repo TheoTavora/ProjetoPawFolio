@@ -24,8 +24,8 @@ ATENÇÃO: O NOME DO SISTEMA (PawFolio) NÃO É MEU, APENAS UTILIZANDO PARA FINS
 - Protótipo teórico de sensores integrados para o ambiente petshop.
 
 ### 🤖 4. IA e Aprendizado de Máquina
-- Recomendação de serviços baseada no tipo de pet.
-- Chatbot inteligente de FAQ com IA local e compreensão de paráfrases (detalhado abaixo).
+Chatbot inteligente de FAQ com IA local e compreensão de paráfrases:
+O sistema conta com um chatbot de FAQ capaz de entender diferentes formas de perguntar (paráfrases), usando IA local sem depender de APIs externas.
 
 ### 📱 5. Multiplataforma e BI
 - Relatórios com Google Data Studio / Power BI / PHP.
@@ -37,12 +37,8 @@ ATENÇÃO: O NOME DO SISTEMA (PawFolio) NÃO É MEU, APENAS UTILIZANDO PARA FINS
 
 ---
 
-## 💬 Chatbot Inteligente com IA Local
-
-O sistema conta com um chatbot de FAQ capaz de entender diferentes formas de perguntar (paráfrases), usando IA local sem depender de APIs externas.
-
 ### ⚙️ Como funciona:
-- Utiliza o modelo `all-MiniLM-L6-v2` da biblioteca `sentence-transformers`.
+- Utiliza o modelo `intfloat/multilingual-e5-small` da biblioteca `sentence-transformers`.
 - As perguntas do usuário são convertidas em vetores numéricos (embeddings).
 - O sistema compara a similaridade com a base existente e retorna a resposta mais próxima.
 
@@ -56,32 +52,31 @@ O sistema conta com um chatbot de FAQ capaz de entender diferentes formas de per
 
 ## ✅ Como configurar o projeto
 
-1. **Pré-requisitos**
-- PHP 8+
-- MySQL/MariaDB (XAMPP/LAMPP)
-- Python 
-- Node.js (para SASS)
-- Flask e sentence-transformers:
-  ```bash
-  pip install flask sentence-transformers
-   ```
+1.  **Pré-requisitos**
+Crie uma virtual environment com Python
+`$python -m venv .venv`
+
+2. **Ative a virtual environment**
+**Windows**
+`.venv/Script/Activate.ps1`
+
+3. **Instale as depedências:**
+`pip install -r requirements/requirements.txt`
+
+Para o Sass tenha o NPM
 - Sass: Instale com:
    ```bash
    npm install -g sass
    ```
 
-3. **Configure o banco de dados**
-   - Importe o arquivo `.sql` atualizado (conforme o diagrama de classes).
+4. **Configure o banco de dados**
+   - Fazer o migration  `python manage.py makemigrations` e depois: `python manage.py migrate`
    - Ou crie o banco com base no modelo acima usando MySQL Workbench.
 
-4. **Configure o arquivo `config.php`**
-   - Ajuste as variáveis de conexão com o banco:
-     ```php
-     $dbHost = 'localhost';
-     $dbUsername = 'root';
-     $dbPassword = '';
-     $dbName = 'pawfolio';
-     ```
+5. **Rode o projeto**
+`python manage.py runserver`
+
+### O padrão da url é http://localhost:8000
 
 ### 📎 Autor
 Desenvolvido por <a href="https://github.com/TheoTavora">Theo Vitor</a>
