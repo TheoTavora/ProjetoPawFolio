@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container w-100 h-100 d-flex flex-column align-items-center justify-content-start py-4">
+
+  <h1>Petshops</h1>
+  <p><a href="{% url 'petshop_create' %}">Novo</a></p>
+
+<table border="1" cellpadding="6">
+  <thead>
+    <tr>
+      <th>ID</th><th>Nome</th><th>Email</th><th>Telefone</th><th>Cidade/UF</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in itens %}
+      <tr>
+        <td>{{ p.id_petshop }}</td>
+        <td>{{ p.nome }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.telefone }}</td>
+        <td>{{ p.cidade }}/{{ p.estado }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">Nenhum registro.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock content %}

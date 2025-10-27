@@ -1,13 +1,18 @@
-from django.http import HttpResponse
+import os, json, requests
+from django.conf import settings
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.csrf import csrf_exempt
 from core.services.cliente_service import cadastrar_cliente
-from core.models import Cliente, Agendamento, Pet
+from core.models import Cliente, Agendamento, Pet, Petshop
 from datetime import date
+
+SEMANTIC_API_URL = os.getenv("SEMANTIC_API_URL", "http://127.0.0.1:5000/responder")
+
 
 def index(request):
     return render(request, "index.html")
-
 
 def _get_cliente_by_session(request):
     email = request.session.get("user_email")
@@ -27,31 +32,68 @@ def cadastro_view(request):
         return render(request, "cadastro.html", {"erro": "falha ao cadastrar"})
     return render(request, "cadastro.html")
 
+def cliente_list(request):
+    clientes = Cliente.objects.all().only("nome", "email")
+    return render(request, "cliente_list.html", {"clientes": clientes})
+
 @require_http_methods(["GET", "POST"])
 def login_view(request):
     if request.method == "POST":
         email = (request.POST.get("email") or "").strip()
         senha = request.POST.get("senha") or ""
+
         if not email or not senha:
             return render(request, "login.html", {"erro": "preencha e-mail e senha."})
+        normalized_email = email.lower()
 
-        # valida simples (plaintext)
-        cli = Cliente.objects.filter(email=email, senha=senha).only("email","nome").first()
-        if cli:
+        admin_creds = next(
+            (
+                admin
+                for admin in getattr(settings, "ADMIN_ACCOUNTS", [])
+                if admin.get("email", "").lower() == normalized_email and admin.get("senha") == senha
+            ),
+            None,
+        )
+        if admin_creds:
             request.session.cycle_key()
-            request.session["user_email"] = cli.email
-            request.session["user_nome"]  = cli.nome
+            request.session["user_email"] = admin_creds.get("email") or email
+            request.session["user_nome"] = admin_creds.get("nome") or "Administrador"
+            request.session["user_tipo"] = "admin"
             return redirect("index")
+
+        cliente = (
+            Cliente.objects.filter(email__iexact=email, senha=senha)
+            .only("email", "nome")
+            .first()
+        )
+        if cliente:
+            request.session.cycle_key()
+            request.session["user_email"] = cliente.email
+            request.session["user_nome"] = cliente.nome
+            request.session["user_tipo"] = "cliente"
+            return redirect("index")
+
+        petshop = (
+            Petshop.objects.filter(email__iexact=email, senha=senha)
+            .only("email", "nome")
+            .first()
+        )
+        if petshop:
+            request.session.cycle_key()
+            request.session["user_email"] = petshop.email
+            request.session["user_nome"] = petshop.nome
+            request.session["user_tipo"] = "petshop"
+            return redirect("index")
+
         return render(request, "login.html", {"erro": "e-mail ou senha incorretos."})
 
     return render(request, "login.html")
 
 def logout_view(request):
-    for k in ("user_email","user_nome"):
+    for k in ("user_email", "user_nome", "user_tipo"):
         request.session.pop(k, None)
     request.session.cycle_key()
     return redirect("index")
-
 
 def agendamentos_view(request):
     if not request.session.get("user_email"):
@@ -147,3 +189,48 @@ def pet_novo_view(request):
             return render(request, "cadastropet.html", ctx)
 
     return render(request, "cadastropet.html", ctx)
+
+def petshop_create(request):
+    if request.method == "POST":
+        Petshop.objects.create(
+            nome=request.POST.get("nome", "").strip(),
+            email=request.POST.get("email", "").strip(),
+            senha=request.POST.get("senha", ""),
+            rua=request.POST.get("rua", "").strip(),
+            cidade=request.POST.get("cidade", "").strip(),
+            estado=request.POST.get("estado", "").strip(),
+            telefone=request.POST.get("telefone", "").strip(),
+        )
+        return redirect("petshop_list")
+    return render(request, "cadastropetshop.html") 
+
+def petshop_list(request):
+    itens = Petshop.objects.all().order_by("id_petshop")
+    return render(request, "petshop_list.html", {"itens": itens})
+
+def chatbot_view(request):
+    return render(request, "chatbot.html")
+
+@csrf_exempt
+@require_POST
+def responder(request):
+    pergunta = request.POST.get("pergunta")
+    if not pergunta:
+        # também aceita JSON se quiser
+        try:
+            body = json.loads(request.body or "{}")
+            pergunta = body.get("pergunta")
+        except Exception:
+            pass
+
+    if not pergunta:
+        return JsonResponse({"erro": "Pergunta não recebida"}, status=400)
+
+    try:
+        r = requests.post(SEMANTIC_API_URL, json={"pergunta": pergunta}, timeout=10)
+        r.raise_for_status()
+        return JsonResponse(r.json(), status=r.status_code, safe=True)
+    except requests.exceptions.JSONDecodeError:
+        return JsonResponse({"erro": "Resposta inválida do serviço"}, status=502)
+    except requests.RequestException as e:
+        return JsonResponse({"erro": "Serviço indisponível", "detalhe": str(e)}, status=502)

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/cadastro-pets.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<article class="ctt cadastro-petshop" aria-labelledby="ttl-pet">
+  <header>
+    <h1 id="ttl-pet">Cadastrar PetShop</h1>
+    <p id="desc-pet">preencha os dados do seu PetShop. campos marcados com * são obrigatórios.</p>
+  </header>
+
+  {% if erro %}
+    <div role="alert" aria-live="polite" class="alert alert-error">{{ erro }}</div>
+  {% endif %}
+  {% if sucesso %}
+    <div role="status" aria-live="polite" class="alert alert-success">{{ sucesso }}</div>
+  {% endif %}
+
+  <form method="post" onsubmit="return validarFormulario();">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="nome">Nome *</label>
+        <input type="text" id="nome" name="nome" maxlength="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" maxlength="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="senha">Senha *</label>
+        <input type="password" id="senha" name="senha" maxlength="100" 
+               pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[@!#]).{8,}$"
+               title="A senha deve ter ao menos 8 caracteres, incluir 1 número, 1 letra maiúscula e 1 símbolo (@, ! ou #)"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="confirmar_senha">Confirmar Senha *</label>
+        <input type="password" id="confirmar_senha" name="confirmar_senha" maxlength="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="rua">Rua *</label>
+        <input type="text" id="rua" name="rua" maxlength="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="cidade">Cidade *</label>
+        <input type="text" id="cidade" name="cidade" maxlength="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="estado">Estado *</label>
+        <input type="text" id="estado" name="estado" maxlength="100" required>
+    </div>
+
+    <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input type="text" id="telefone" name="telefone" maxlength="15">
+    </div>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<script>
+function validarFormulario() {
+    const senha = document.getElementById("senha").value;
+    const confirmar = document.getElementById("confirmar_senha").value;
+
+    if (senha !== confirmar) {
+        alert("As senhas não conferem!");
+        return false;
+    }
+    return true;
+}
+</script>
+
+
+
+{% endblock content %}

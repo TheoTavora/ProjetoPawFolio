@@ -1,6 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/cadastro-pets.css' %}">
+{% endblock extra_css %}
+
 {% block content %}
-<article class="ctt" aria-labelledby="ttl-pet">
+<article class="ctt cadastro-pet" aria-labelledby="ttl-pet">
   <header>
     <h1 id="ttl-pet">Cadastrar pet</h1>
     <p id="desc-pet">preencha os dados do seu pet. campos marcados com * são obrigatórios.</p>
@@ -76,15 +82,4 @@
     </div>
   </form>
 </article>
-
-<style>
-.ctt{max-width:720px;margin-inline:auto;padding:1.25rem}
-.field{display:flex;flex-direction:column;gap:.25rem;margin-block:.5rem}
-.actions{display:flex;gap:.5rem;margin-top:1rem}
-.btn{padding:.6rem 1rem;border:0;border-radius:.5rem;cursor:pointer}
-.btn-secundario{display:inline-block;text-decoration:none;padding:.6rem 1rem;border:1px solid #ddd;border-radius:.5rem}
-.alert{padding:.75rem 1rem;border-radius:.5rem;margin:.5rem 0}
-.alert-error{background:#fee;border:1px solid #fbb}
-.alert-success{background:#efe;border:1px solid #bdb}
-</style>
 {% endblock %}

@@ -1,0 +1,222 @@
+@import "variables";
+
+article.ctt {
+  width: min(58rem, 100%);
+  margin-inline: auto;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 1.5rem;
+  box-shadow: $sombra-form;
+  backdrop-filter: $blur;
+  color: $cor-preto;
+
+  header {
+    text-align: center;
+    margin-bottom: clamp(1.25rem, 4vw, 2rem);
+
+    h1 {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      margin: 0 0 0.5rem;
+      text-transform: capitalize;
+    }
+
+    p {
+      margin: 0;
+      font-size: clamp(1rem, 2.2vw, 1.125rem);
+      color: rgba(36, 36, 36, 0.75);
+      line-height: 1.5;
+    }
+  }
+
+  .alert {
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.75rem;
+    margin: 0 0 1rem;
+    font-weight: 600;
+  }
+
+  .alert-error {
+    background: #fee;
+    border: 1px solid #fbb;
+    color: #8a1f1f;
+  }
+
+  .alert-success {
+    background: #efe;
+    border: 1px solid #bdb;
+    color: #1a5e1a;
+  }
+
+  form {
+    display: grid;
+    gap: 1.25rem;
+    text-align: left;
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 1.25rem;
+
+      legend {
+        grid-column: 1 / -1;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: $cor-preto;
+        margin-bottom: 0.5rem;
+        text-transform: capitalize;
+        letter-spacing: 0.02em;
+      }
+    }
+
+    .field,
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: capitalize;
+      color: $cor-preto;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(36, 36, 36, 0.2);
+      background: rgba(255, 255, 255, 0.9);
+      color: $cor-preto;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        border-color: $cor-primaria;
+        box-shadow: 0 0 0 2px rgba(160, 9, 9, 0.25);
+        outline: none;
+      }
+
+      &::placeholder {
+        color: rgba(36, 36, 36, 0.45);
+      }
+    }
+
+    textarea {
+      min-height: 7rem;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+
+    button,
+    .btn {
+      padding: 0.9rem 1.5rem;
+      border-radius: 0.75rem;
+      border: none;
+      background: $cor-primaria;
+      color: $cor-branco;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover,
+    .btn:hover {
+      background-color: $cor-hover-link;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-secundario {
+      background: transparent;
+      color: $cor-preto;
+      border: 1px solid rgba(36, 36, 36, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-secundario:hover {
+      background-color: rgba(36, 36, 36, 0.05);
+      color: $cor-hover-link;
+      border-color: $cor-hover-link;
+    }
+  }
+
+  &.cadastro-petshop {
+    form {
+      max-width: 640px;
+      margin-inline: auto;
+
+      .form-group {
+        margin: 0;
+      }
+
+      button[type="submit"] {
+        justify-self: stretch;
+        width: 100%;
+      }
+    }
+
+    @media (min-width: 768px) {
+      form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: end;
+
+        button[type="submit"] {
+          grid-column: 1 / -1;
+          justify-self: flex-end;
+          width: auto;
+        }
+      }
+    }
+  }
+
+  &.cadastro-pet {
+    form {
+      fieldset {
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: start;
+        }
+
+        textarea {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .actions {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 1.5rem;
+
+    form {
+      .actions {
+        justify-content: stretch;
+
+        button,
+        .btn,
+        .btn-secundario {
+          flex: 1 1 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,189 @@
+article.ctt {
+  width: min(58rem, 100%);
+  margin-inline: auto;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  color: #242424;
+}
+article.ctt header {
+  text-align: center;
+  margin-bottom: clamp(1.25rem, 4vw, 2rem);
+}
+article.ctt header h1 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  margin: 0 0 0.5rem;
+  text-transform: capitalize;
+}
+article.ctt header p {
+  margin: 0;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  color: rgba(36, 36, 36, 0.75);
+  line-height: 1.5;
+}
+article.ctt .alert {
+  padding: 0.85rem 1.1rem;
+  border-radius: 0.75rem;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+article.ctt .alert-error {
+  background: #fee;
+  border: 1px solid #fbb;
+  color: #8a1f1f;
+}
+article.ctt .alert-success {
+  background: #efe;
+  border: 1px solid #bdb;
+  color: #1a5e1a;
+}
+article.ctt form {
+  display: grid;
+  gap: 1.25rem;
+  text-align: left;
+}
+article.ctt form fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+article.ctt form fieldset legend {
+  grid-column: 1/-1;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #242424;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+article.ctt form .field,
+article.ctt form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+article.ctt form label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #242424;
+}
+article.ctt form input,
+article.ctt form select,
+article.ctt form textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(36, 36, 36, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  color: #242424;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+article.ctt form input:focus,
+article.ctt form select:focus,
+article.ctt form textarea:focus {
+  border-color: rgba(160, 9, 9, 0.822);
+  box-shadow: 0 0 0 2px rgba(160, 9, 9, 0.25);
+  outline: none;
+}
+article.ctt form input::placeholder,
+article.ctt form select::placeholder,
+article.ctt form textarea::placeholder {
+  color: rgba(36, 36, 36, 0.45);
+}
+article.ctt form textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+article.ctt form .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+article.ctt form button,
+article.ctt form .btn {
+  padding: 0.9rem 1.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: rgba(160, 9, 9, 0.822);
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+article.ctt form button:hover,
+article.ctt form .btn:hover {
+  background-color: rgba(122, 24, 24, 0.747);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+article.ctt form .btn-secundario {
+  background: transparent;
+  color: #242424;
+  border: 1px solid rgba(36, 36, 36, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+article.ctt form .btn-secundario:hover {
+  background-color: rgba(36, 36, 36, 0.05);
+  color: rgba(122, 24, 24, 0.747);
+  border-color: rgba(122, 24, 24, 0.747);
+}
+article.ctt.cadastro-petshop form {
+  max-width: 640px;
+  margin-inline: auto;
+}
+article.ctt.cadastro-petshop form .form-group {
+  margin: 0;
+}
+article.ctt.cadastro-petshop form button[type=submit] {
+  justify-self: stretch;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  article.ctt.cadastro-petshop form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+  article.ctt.cadastro-petshop form button[type=submit] {
+    grid-column: 1/-1;
+    justify-self: flex-end;
+    width: auto;
+  }
+}
+@media (min-width: 768px) {
+  article.ctt.cadastro-pet form fieldset {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+article.ctt.cadastro-pet form fieldset textarea {
+  grid-column: 1/-1;
+}
+article.ctt.cadastro-pet form .actions {
+  margin-top: 1rem;
+}
+@media (max-width: 640px) {
+  article.ctt {
+    padding: 1.5rem;
+  }
+  article.ctt form .actions {
+    justify-content: stretch;
+  }
+  article.ctt form .actions button,
+  article.ctt form .actions .btn,
+  article.ctt form .actions .btn-secundario {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+}
+
+/*# sourceMappingURL=cadastro-pets.css.map */

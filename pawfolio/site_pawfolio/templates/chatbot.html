@@ -1,0 +1,589 @@
+
+{% load static %}
+
+{% block content %}
+
+<style>
+    * {
+            box-sizing: border-box;
+        }
+
+    body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #eaa866ff 0%, #611808ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-y: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(218, 44, 0, 0.27) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 72, 0, 0.35) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(220, 4, 0, 0.45) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 3px 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h2::before {
+            content: '🤖';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        h2::after {
+            content: '🐾';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 2rem;
+            animation: bounce 2s infinite 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        #chat {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #chat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ffa726);
+            background-size: 300% 100%;
+            animation: gradientShift 6s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        h4 {
+            background: linear-gradient(135deg, #4d0000ff, #ffa726);
+            color: white;
+            padding: 20px 30px;
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+        }
+
+        h4::before {
+            content: '💬';
+            margin-right: 10px;
+        }
+
+        #mensagens {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        #mensagens::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #mensagens::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 3px;
+        }
+
+        #mensagens::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 3px;
+        }
+
+        #mensagens::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+
+        /* Estilos para suas classes existentes */
+        .mensagem {
+            margin-bottom: 16px;
+            animation: fadeInUp 0.4s ease;
+            display: flex;
+            position: relative;
+        }
+
+        .mensagem.user {
+            justify-content: flex-end;
+        }
+
+        .mensagem.bot {
+            justify-content: flex-start;
+        }
+
+        .mensagem::before {
+            content: attr(data-content);
+        }
+
+        .mensagem.user::after,
+        .mensagem.bot::after {
+            content: '';
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* Estilização das mensagens usando pseudo-elementos para manter o texto */
+        .mensagem.user {
+            background: linear-gradient(135deg, #ff6b6b, #ffa726);
+            color: white;
+            border-radius: 18px;
+            border-bottom-right-radius: 4px;
+            padding: 12px 18px;
+            max-width: 70%;
+            margin-left: auto;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .mensagem.bot {
+            background: #ffffff;
+            color: #2d3748;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 12px 18px;
+            max-width: 70%;
+            margin-right: auto;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            position: relative;
+            margin-left: 30px;
+        }
+
+        .mensagem.bot::before {
+            content: '🐾';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilo especial para indicador de digitação */
+        .mensagem.digitando {
+            background: #ffffff;
+            color: #a0aec0;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 12px 18px;
+            max-width: 70%;
+            margin-right: auto;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-left: 30px;
+            position: relative;
+            font-style: italic;
+        }
+
+        .mensagem.digitando::before {
+            content: '🐾';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .mensagem.digitando::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '...'; }
+            40% { content: ''; }
+            60% { content: '.'; }
+            80% { content: '..'; }
+        }
+
+        /* Input area */
+        .input-area {
+            padding: 20px;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #pergunta {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        #pergunta:focus {
+            border-color: #667eea;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        #pergunta::placeholder {
+            color: #a0aec0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-width: 100px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Link para painel */
+        a {
+            margin-top: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .painel::before {
+            content: '⚙️';
+        }
+
+        a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+                padding: 15px;
+            }
+            
+            #chat {
+                height: 500px;
+                border-radius: 16px;
+            }
+            
+            .mensagem.user,
+            .mensagem.bot,
+            .mensagem.digitando {
+                max-width: 85%;
+            }
+            
+            .input-area {
+                padding: 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            #pergunta {
+                width: 100%;
+            }
+            
+            button {
+                width: 100%;
+                padding: 18px;
+            }
+        }
+
+        /* Estado vazio do chat */
+        .chat-vazio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #a0aec0;
+            text-align: center;
+        }
+
+        .chat-vazio::before {
+            content: '🐕💬🐱';
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .chat-vazio p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .chat-vazio small {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+  </style>
+
+
+<h2>CHATBOT I.A PERSONALIZADO - PAWFOLIO PawChat</h2>
+<a href="{% url 'index' %}" style="margin: 1% 0;">Voltar ao Home</a>
+    <div id="chat">
+        <h4>Faça uma pergunta no PawChat!</h4>
+        <div id="mensagens">
+            <div class="chat-vazio">
+                <p>Olá! Sou o PawChat 🐾</p>
+                <small>Digite sua pergunta abaixo para começarmos a conversar!</small>
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="pergunta" placeholder="Digite sua pergunta..." />
+            <button onclick="enviarPergunta()">Enviar</button>
+        </div>
+    </div>
+    <a href="../../chatbot/admin.php" class="painel">Painel de perguntas</a>
+
+  <script>
+      // Suas funções originais
+      function adicionarMensagem(texto, classe) {
+        const div = document.createElement('div');
+          div.className = `mensagem ${classe}`;
+          div.textContent = texto;
+            
+            // Remove o estado vazio na primeira mensagem
+            const chatVazio = document.querySelector('.chat-vazio');
+            if (chatVazio) {
+                chatVazio.remove();
+            }
+            
+            document.getElementById('mensagens').appendChild(div);
+            
+            // Scroll para a última mensagem
+            const mensagens = document.getElementById('mensagens');
+            mensagens.scrollTop = mensagens.scrollHeight;
+        }
+
+        // Funções para mostrar digitação
+        function mostrarDigitando() {
+            const mensagens = document.getElementById('mensagens');
+            const digitandoDiv = document.createElement('div');
+            digitandoDiv.className = 'mensagem digitando';
+            digitandoDiv.id = 'digitando';
+            digitandoDiv.textContent = 'PawChat está digitando';
+            
+            mensagens.appendChild(digitandoDiv);
+            mensagens.scrollTop = mensagens.scrollHeight;
+        }
+
+        function removerDigitando() {
+            const digitando = document.getElementById('digitando');
+            if (digitando) {
+                digitando.remove();
+            }
+        }
+
+        // Sua função adaptada com indicador de digitação
+        async function enviarPergunta() {
+            const input = document.getElementById('pergunta');
+            const button = document.querySelector('button');
+            const pergunta = input.value.trim();
+            
+            if (!pergunta) return;
+            
+            // Adiciona mensagem do usuário
+            adicionarMensagem(pergunta, 'user');
+            input.value = '';
+            
+            // Desabilita botão e mostra loading
+            button.disabled = true;
+            button.classList.add('loading');
+            const textoOriginal = button.textContent;
+            button.textContent = '';
+            
+            // Mostra indicador de digitação
+            mostrarDigitando();
+            
+            try {
+                const formData = new FormData();
+                formData.append('pergunta', pergunta);
+                
+                const resposta = await fetch("{% url 'responder' %}", {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const json = await resposta.json();
+                
+                // Remove indicador de digitação
+                removerDigitando();
+                
+                // Adiciona resposta do bot
+                adicionarMensagem(json.resposta || 'Erro ao responder.', 'bot');
+                
+            } catch (error) {
+                removerDigitando();
+                adicionarMensagem('Erro ao conectar com o servidor.', 'bot');
+            } finally {
+                // Reabilita botão
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.textContent = textoOriginal;
+            }
+        }
+
+        // Enter para enviar
+        document.getElementById('pergunta').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                enviarPergunta();
+            }
+        });
+  </script>
+{% endblock content %}

@@ -12,9 +12,9 @@ app = Flask(__name__)
 
 # Carrega o modelo e a base do FAQ uma única vez
 print("Carregando modelo e base de dados...")
-modelo = SentenceTransformer('all-MiniLM-L6-v2')
+modelo = SentenceTransformer('intfloat/multilingual-e5-small')
 
-with open("dev-utils/base_faq.json", "r", encoding="utf-8") as f:
+with open("base_faq.json", "r", encoding="utf-8") as f:
     base_faq = json.load(f)
 
 # Pré-processa os embeddings do FAQ

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container w-100 h-100 d-flex flex-column align-items-center justify-content-start py-4">
+
+  <h1>Clientes</h1>
+  <p><a href="{% url 'cadastro' %}">Novo</a></p>
+
+<table border="1" cellpadding="6">
+  <thead>
+    <tr>
+      <th>ID</th><th>Nome</th><th>Email</th><th>Senha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in clientes %}
+      <tr>
+        <td>{{ c.id_cliente }}</td>
+        <td>{{ c.nome }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.senha }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">Nenhum registro.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock content %}

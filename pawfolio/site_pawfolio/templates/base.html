@@ -27,10 +27,11 @@
     <meta name="description" content="Conheça o Pawfolio.">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="{% static '/css/components.css' %}">
+    {% block extra_css %}{% endblock extra_css %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/png" href="{% static '/images/logopawfoliomenor.png' %}"/>
-    <title>PawFolio - Seu eCommerce de serviços pet!</title>
+    <title>PawFolio - Encontro Petshops!</title>
     {% load django_bootstrap5 %}
 
     {% bootstrap_css %}
@@ -45,7 +46,7 @@
 
     <div
         class="
-        {% if request.resolver_match.url_name == 'index' %}
+        {% if request.resolver_match.url_name == 'index' or request.resolver_match.url_name == 'chatbot' %}
         container-fluid container-geral
         {% else %}
         container ct-geral d-flex align-items-center justify-content-center
