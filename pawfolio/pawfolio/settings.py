@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,9 @@ SECRET_KEY = 'django-insecure--w4%e0#f+l=3h$!o9x&u6f88sz_vl*i*f#wv%kpuv6clrju8yl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "*"
+    ]
 
 
 # Application definition
@@ -83,7 +86,10 @@ DATABASES = {
         "PASSWORD": "",          # ajuste se tiver senha
         "HOST": "127.0.0.1",
         "PORT": "3306",
-        "OPTIONS": {"charset": "utf8mb4"},
+        "OPTIONS": {
+            "charset": "utf8mb4",
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'"
+            },
     }
 }
 
@@ -128,3 +134,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# Simple session-based admin accounts (expand as needed)
+ADMIN_ACCOUNTS = [
+    {
+        "email": os.getenv("ADMIN_EMAIL", "admin@pawfolio.com"),
+        "senha": os.getenv("ADMIN_SENHA", "admin123"),
+        "nome": os.getenv("ADMIN_NOME", "Administrador"),
+    }
+]
